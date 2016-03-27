@@ -1,86 +1,104 @@
-DROP DATABASE IF EXISTS mydb1;
-CREATE DATABASE mydb1;
-USE mydb1;
+DROP DATABASE IF EXISTS music4youdb;
+CREATE DATABASE music4youdb;
+
+USE music4youdb;
 
 CREATE TABLE users (
-    id BINARY(16) NOT NULL,
-    loginid VARCHAR(15) NOT NULL UNIQUE,
-    password BINARY(16) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    fullname VARCHAR(255) NOT NULL,
+    id          BINARY(16) NOT NULL,
+    loginid     VARCHAR(15) NOT NULL UNIQUE,
+    password    BINARY(16) NOT NULL,
+    email       VARCHAR(255) NOT NULL,
+    fullname    VARCHAR(255) NOT NULL,
+    image       varchar(40),
     PRIMARY KEY (id)      
 );
 
-CREATE TABLE ads(
-    userid BINARY(16) NOT NULL,
-    adsid BINARY(16) NOT NULL ,
-    type INT(10) NOT NULL,
-    FOREIGN KEY (userid) REFERENCES users(id),
-    PRIMARY KEY (adsid)
-       
-);
-
-CREATE TABLE adscont
-(
-adsid BINARY(16) NOT NULL,
-adscont VARCHAR(255) NOT NULL,
-opciones VARCHAR(255) NOT NULL,
-listsid BINARY(16) NOT NULL ,
-FOREIGN KEY (adsid) REFERENCES ads(adsid),
-PRIMARY KEY (listsid)
-);
-
-
-CREATE TABLE lists
-(
-listsid BINARY(16) NOT NULL,
-lists BINARY(16) NOT NULL,
-FOREIGN KEY (listsid) REFERENCES adscont(listsid),
-PRIMARY KEY (lists)
-);
-
-CREATE TABLE relacion(
-usuario BINARY(16) NOT NULL,
-anuncios BINARY(16) NOT NULL,
-listas BINARY(16) NOT NULL,
-FOREIGN KEY (usuario) REFERENCES users(id),
-FOREIGN KEY (anuncios) REFERENCES ads(adsid),
-FOREIGN KEY (listas) REFERENCES lists(lists)
-);
-
 CREATE TABLE user_roles (
-    userid BINARY(16) NOT NULL,
-    role ENUM ('registered'),
+    userid      BINARY(16) NOT NULL,
+    role        ENUM ('registered','admin'),
     FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
     PRIMARY KEY (userid, role)
 );
 
 CREATE TABLE auth_tokens (
-    userid BINARY(16) NOT NULL,
-    token BINARY(16) NOT NULL,
+    userid      BINARY(16) NOT NULL,
+    token       BINARY(16) NOT NULL,
     FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
     PRIMARY KEY (token)
 );
 
-CREATE TABLE stings (
-    id BINARY(16) NOT NULL,
-    userid BINARY(16) NOT NULL,
-    subject VARCHAR(100) NOT NULL,
-    content VARCHAR(500) NOT NULL,
-    last_modified TIMESTAMP NOT NULL,
-    creation_timestamp DATETIME not null default current_timestamp,
+CREATE TABLE ads (
+    id          BINARY(16) NOT NULL,
+    userid      BINARY(16) NOT NULL,
+    subject     varchar(50) NOT NULL, 
+    description varchar(500) NOT NULL,
+    precio      long,
+    type        int NOT NULL,
+    last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+    creation_timestamp	datetime not null default current_timestamp,
+    FOREIGN KEY (userid) REFERENCES users(id),
+    PRIMARY KEY (id)
+);
+
+create table events (
+
+    id	        BINARY(16) NOT NULL,
+    userid      BINARY(16) NOT NULL,
+    titol	varchar(100) not null,
+    text	varchar(600) not null,
+    lat         long,
+    lon         long,
+    start_date	datetime not null,
+    end_date	datetime not null,
+    last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+    creation_timestamp	datetime not null default current_timestamp,
     FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
     PRIMARY KEY (id)
 );
 
-insert into users (id,loginid,password,email,fullname) values (1,'admin',123,'das@asd.com','hicham1 azouagh');
-    insert into users (id,loginid,password,email,fullname) values (2,'admin2',123,'das@asd.com','hicham2 azouagh');
-        insert into users (id,loginid,password,email,fullname) values (3,'admin3',123,'das@asd.com','hicham3 azouagh');
-insert into ads (userid,adsid,type) values(1,1,0);
-insert into adscont (adsid,adscont,opciones,listsid) values (1,'asdsdaasdsadsaddas','asd dsa qwe cxz',1);
-insert into lists ( listsid,lists) values(1,123114);
-describe users;
-describe relacion;
-describe  ads;
-describe adscont;
-describe lists;
+create table comments (
+    id          BINARY(16) NOT NULL,
+    userid      BINARY(16) NOT NULL,
+    anuncioid	BINARY(16),
+    eventid     BINARY(16),
+    content	varchar(200) not null,
+    last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+    creation_timestamp	datetime not null default current_timestamp,
+    foreign key (userid)    references users (id) on delete cascade,
+    foreign key (anuncioid) references ads (id),
+    foreign key (eventid)   references events (id),
+    PRIMARY KEY (id)
+	
+);
+
+
+CREATE TABLE playlist
+(
+    id          BINARY(16) NOT NULL,
+    userid      BINARY(16) NOT NULL,
+    audio       varchar(20),
+    youtubelink varchar(100),
+    genre       varchar(20),
+    publication_yr  int,
+    artist      varchar (50) NOT NULL,
+    name        varchar (50) NOT NULL,
+    last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+    creation_timestamp	datetime not null default current_timestamp,
+    FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE mensajeria
+(
+    id              BINARY(16) NOT NULL,
+    userid          BINARY(16) NOT NULL,
+    destinatario    BINARY(16) NOT NULL,
+    subject         varchar(50) NOT NULL,
+    body            varchar(500) NOT NULL,
+    leido           BOOLEAN,
+    last_modified		timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+    creation_timestamp	datetime not null default current_timestamp,
+    FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
+    FOREIGN KEY (destinatario) REFERENCES users(id),
+    PRIMARY KEY (id)
+);
