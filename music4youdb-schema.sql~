@@ -66,7 +66,22 @@ create table comments (
     last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
     creation_timestamp	datetime not null default current_timestamp,
     foreign key (userid)    references users (id) on delete cascade,
+<<<<<<< HEAD
     foreign key (anuncioid) references ads (id),
+=======
+    PRIMARY KEY (id)
+	
+);
+
+create table comments2 (
+    id          BINARY(16) NOT NULL,
+    userid      BINARY(16) NOT NULL,
+    eventid     BINARY(16) NOT NULL,
+    content	varchar(200) not null,
+    last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+    creation_timestamp	datetime not null default current_timestamp,
+    foreign key (userid)    references users (id) on delete cascade,
+>>>>>>> c9f22d0a17956e95f080365658dda084bb741856
     foreign key (eventid)   references events (id),
     PRIMARY KEY (id)
 	
@@ -91,6 +106,7 @@ CREATE TABLE playlist
 
 CREATE TABLE mensajeria
 (
+<<<<<<< HEAD
    	id BINARY(16) NOT NULL,
 
 	userid BINARY(16) NOT NULL,
@@ -114,3 +130,17 @@ CREATE TABLE mensajeria
 
 
 
+=======
+    id              BINARY(16) NOT NULL,
+    userid          BINARY(16) NOT NULL,
+    destinatario    BINARY(16) NOT NULL,
+    subject         varchar(50) NOT NULL,
+    body            varchar(500) NOT NULL,
+    leido           BOOLEAN,
+    last_modified		timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+    creation_timestamp	datetime not null default current_timestamp,
+    FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
+    FOREIGN KEY (destinatario) REFERENCES users(id),
+    PRIMARY KEY (id)
+);
+>>>>>>> c9f22d0a17956e95f080365658dda084bb741856
