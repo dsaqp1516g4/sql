@@ -66,7 +66,18 @@ create table comments (
     last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
     creation_timestamp	datetime not null default current_timestamp,
     foreign key (userid)    references users (id) on delete cascade,
-    foreign key (anuncioid) references ads (id),
+    PRIMARY KEY (id)
+	
+);
+
+create table comments2 (
+    id          BINARY(16) NOT NULL,
+    userid      BINARY(16) NOT NULL,
+    eventid     BINARY(16) NOT NULL,
+    content	varchar(200) not null,
+    last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+    creation_timestamp	datetime not null default current_timestamp,
+    foreign key (userid)    references users (id) on delete cascade,
     foreign key (eventid)   references events (id),
     PRIMARY KEY (id)
 	
