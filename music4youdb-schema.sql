@@ -100,7 +100,7 @@ CREATE TABLE playlist
     FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
     PRIMARY KEY (id)
 );
-
+	
 CREATE TABLE mensajeria
 (
 
