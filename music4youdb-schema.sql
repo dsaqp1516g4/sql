@@ -115,7 +115,7 @@ CREATE TABLE mensajeria
 	creation_timestamp DATETIME not null default current_timestamp,
 	last_modified timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
 	FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
-    	FOREIGN KEY (destinatario) REFERENCES users(id),
+
     	PRIMARY KEY (id)
 );
 

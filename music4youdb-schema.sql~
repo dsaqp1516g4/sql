@@ -108,14 +108,14 @@ CREATE TABLE mensajeria
 
 	userid BINARY(16) NOT NULL,
 
-	destinatario BINARY(50) NOT NULL,
+	destinatario BINARY(16) NOT NULL,
 
 	text VARCHAR(1000) NOT NULL,
 
 	creation_timestamp DATETIME not null default current_timestamp,
 	last_modified timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
 	FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
-    	FOREIGN KEY (destinatario) REFERENCES users(id),
+    	FOREIGN KEY (destinatario) REFERENCES users(id) on delete cascade,
     	PRIMARY KEY (id)
 );
 
