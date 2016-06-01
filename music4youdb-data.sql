@@ -1,6 +1,7 @@
-source socialmusicdb-schema.sql;
+source music4youdb-schema.sql;
 
 insert into users (id,loginid,password,email,fullname, image) values (UNHEX('1'),'admin',UNHEX(MD5('123')),'das@asd.com','hicham1 azouagh', NULL);
+insert into user_roles values (UNHEX('1'), 'admin');
 
 insert into users values(UNHEX('2'),'alicia', UNHEX(MD5('alicia')), 'alicia@acme.com','Alicia tiene malicia',null);
 insert into user_roles values (UNHEX('2'), 'registered');
