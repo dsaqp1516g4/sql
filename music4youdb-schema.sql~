@@ -37,7 +37,7 @@ CREATE TABLE ads (
     image       varchar(50),
     last_modified	timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP,
     creation_timestamp	datetime not null default current_timestamp,
-    FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
+    FOREIGN KEY (userid) REFERENCES users(id),
     PRIMARY KEY (id)
 );
 
